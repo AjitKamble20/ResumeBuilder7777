@@ -1,0 +1,131 @@
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-6 card p-4">
+
+      <!-- Step 1: Personal Info -->
+      <div *ngIf="step === 1">
+        <h4>Personal Info</h4>
+        <input class="form-control mb-2" placeholder="Full Name" [(ngModel)]="personalInfo.fullName">
+        <input class="form-control mb-2" placeholder="Email" [(ngModel)]="personalInfo.email">
+        <input class="form-control mb-2" placeholder="Phone" [(ngModel)]="personalInfo.phone">
+        <textarea class="form-control mb-2" placeholder="Summary" rows="3" [(ngModel)]="personalInfo.summary"></textarea>
+
+        <div class="d-flex justify-content-end">
+          <button class="btn btn-primary" (click)="nextStep()">Next</button>
+        </div>
+      </div>
+
+      <!-- Step 2: Experience -->
+      <div *ngIf="step === 2">
+        <h4>Experience</h4>
+        <button class="btn btn-outline-primary mb-3" (click)="addExperience()">+ Add Experience</button>
+
+        <div *ngFor="let exp of experiences; let i = index" class="border rounded p-3 mb-3">
+          <h6>Experience {{ i+1 }}</h6>
+          <input class="form-control mb-2" placeholder="Company" [(ngModel)]="exp.company">
+          <input class="form-control mb-2" placeholder="Role" [(ngModel)]="exp.role">
+          <input type="date" class="form-control mb-2" placeholder="Start Date" [(ngModel)]="exp.start">
+          <input type="date" class="form-control mb-2" placeholder="End Date" [(ngModel)]="exp.end">
+          <textarea class="form-control mb-2" placeholder="Description" [(ngModel)]="exp.description"></textarea>
+          <button class="btn btn-danger btn-sm" (click)="removeExperience(i)">Remove</button>
+        </div>
+
+        <div class="d-flex justify-content-between">
+          <button class="btn btn-secondary" (click)="prevStep()">Back</button>
+          <button class="btn btn-primary" (click)="nextStep()">Next</button>
+        </div>
+      </div>
+
+      <!-- Step 3: Education -->
+      <div *ngIf="step === 3">
+        <h4>Education</h4>
+        <button class="btn btn-outline-primary mb-3" (click)="addEducation()">+ Add Education</button>
+
+        <div *ngFor="let edu of education; let i = index" class="border rounded p-3 mb-3">
+          <h6>Education {{ i+1 }}</h6>
+          <input class="form-control mb-2" placeholder="School/University" [(ngModel)]="edu.school">
+          <input class="form-control mb-2" placeholder="Degree/Program" [(ngModel)]="edu.degree">
+          <input type="date" class="form-control mb-2" placeholder="Start Date" [(ngModel)]="edu.start">
+          <input type="date" class="form-control mb-2" placeholder="End Date" [(ngModel)]="edu.end">
+          <textarea class="form-control mb-2" placeholder="Description" [(ngModel)]="edu.description"></textarea>
+          <button class="btn btn-danger btn-sm" (click)="removeEducation(i)">Remove</button>
+        </div>
+
+      <div class="d-flex justify-content-between">
+  <button class="btn btn-secondary" (click)="prevStep()">Back</button>
+  <div>
+    <button class="btn btn-info me-2" (click)="togglePreview()">Preview</button>
+    <button class="btn btn-success" (click)="Finish()">Finish</button>
+  </div>
+</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Toast Container -->
+<div class="toast-container position-fixed top-0 end-0 p-3">
+  <div *ngFor="let toast of toasts; let i = index"
+       class="toast align-items-center text-white border-0 fade show mb-2"
+       [ngClass]="toast.type === 'error' ? 'bg-danger' : 'bg-success'"
+       role="alert" aria-live="assertive" aria-atomic="true">
+
+    <div class="d-flex">
+      <div class="toast-body">{{ toast.message }}</div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto"
+              (click)="closeToast(i)"></button>
+    </div>
+  </div>
+</div>
+
+<!-- Preview Modal -->
+<div class="modal fade show d-block" tabindex="-1" *ngIf="showPreview">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header no-print">
+        <h5 class="modal-title">Resume Preview</h5>
+        <button type="button" class="btn-close" (click)="togglePreview()"></button>
+      </div>
+
+      <!-- Resume Content -->
+      <div class="modal-body resume-preview" id="resume-content">
+        <h3>{{ personalInfo.fullName }}</h3>
+        <p>Email: {{ personalInfo.email }} | Phone: {{ personalInfo.phone }}</p>
+
+        <div class="section">
+          <h4>Summary</h4>
+          <p>{{ personalInfo.summary }}</p>
+        </div>
+
+        <div class="section">
+          <h4>Experience</h4>
+          <div *ngFor="let exp of experiences">
+            <p><strong>{{ exp.company }}</strong> - {{ exp.role }}</p>
+            <p>{{ exp.start }} - {{ exp.end }}</p>
+            <p><i>{{ exp.description }}</i></p>
+          </div>
+        </div>
+
+        <div class="section">
+          <h4>Education</h4>
+          <div *ngFor="let edu of education">
+            <p><strong>{{ edu.school }}</strong> - {{ edu.degree }}</p>
+            <p>{{ edu.start }} - {{ edu.end }}</p>
+            <p><i>{{ edu.description }}</i></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer (not part of PDF) -->
+      <div class="modal-footer border-0 no-print">
+        <button class="btn btn-secondary" (click)="togglePreview()">Close</button>
+        <button class="btn btn-success" (click)="downloadPDF()">Download PDF</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
