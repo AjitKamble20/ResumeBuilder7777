@@ -24,11 +24,9 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      # Step 4: Build Angular app for production
+      # Step 4: Build Angular app for production using npx
       - name: Build Angular app
-        run: |
-          # Build ignoring budgets to prevent failure
-          ng build --configuration=production --base-href /ResumeBuilder7777/ --stats-json
+        run: npx ng build --configuration=production --base-href /ResumeBuilder7777/ --stats-json
 
       # Step 5: Detect actual dist folder
       - name: Detect dist folder
