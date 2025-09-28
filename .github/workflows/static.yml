@@ -28,26 +28,26 @@ jobs:
       - name: Build Angular app
         run: npx ng build --configuration=production --base-href /ResumeBuilder7777/ --stats-json
 
-      # Step 5: Detect actual dist folder dynamically
-      - name: Detect dist folder
+      # Step 5: Detect dist folder and browser subfolder
+      - name: Detect dist/browser folder
         id: dist
         run: |
           DIST_FOLDER=$(ls dist | head -n 1)
-          echo "Detected dist folder: $DIST_FOLDER"
-          echo "DIST_FOLDER=$DIST_FOLDER" >> $GITHUB_ENV
+          DIST_PATH="dist/$DIST_FOLDER/browser"
+          echo "DIST_FOLDER_PATH=$DIST_PATH" >> $GITHUB_ENV
 
-      # Step 6: Verify contents of the dist folder
-      - name: List dist folder contents
-        run: ls -l dist/$DIST_FOLDER
+      # Step 6: List contents for debugging
+      - name: List dist/browser folder contents
+        run: ls -l $DIST_FOLDER_PATH
 
       # Step 7: Create 404 fallback for Angular routing
       - name: Create 404 fallback
-        run: cp dist/$DIST_FOLDER/index.html dist/$DIST_FOLDER/404.html
+        run: cp $DIST_FOLDER_PATH/index.html $DIST_FOLDER_PATH/404.html
 
       # Step 8: Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
-          folder: dist/$DIST_FOLDER
+          folder: $DIST_FOLDER_PATH
           token: ${{ secrets.GITHUB_TOKEN }}
