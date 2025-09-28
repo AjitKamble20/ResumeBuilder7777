@@ -26,7 +26,8 @@ jobs:
 
       # Step 4: Build Angular app for production
       - name: Build Angular app
-        run: npm run build -- --configuration=production --base-href /ResumeBuilder7777/
+        run: npm run build -- --configuration=production --base-href /ResumeBuilder7777/ --source-map=false
+
 
       # Step 5: Create 404.html for routing fallback
       - name: Create 404 fallback
