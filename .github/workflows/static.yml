@@ -45,10 +45,11 @@ jobs:
       - name: Create 404 fallback
         run: cp ${{ env.DIST_FOLDER_PATH }}/index.html ${{ env.DIST_FOLDER_PATH }}/404.html
 
-      # Step 8: Deploy to GitHub Pages
+      # Step 8: Deploy to GitHub Pages with force (avoids git 128 errors)
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
           folder: ${{ env.DIST_FOLDER_PATH }}
           token: ${{ secrets.GITHUB_TOKEN }}
+          clean: true  # Force overwrite existing gh-pages content
